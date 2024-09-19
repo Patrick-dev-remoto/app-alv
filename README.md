@@ -59,62 +59,74 @@ Alvorada Veículos@DESKTOP-BO8D7TC MINGW64 /c/dev/sys (remote)
 $
 ```
 
-
-
 # INICIANDO O FRONTEND
 
 ```
-PS C:\dev\system> npm create vite@latest
+PS C:\dev\sys\system_alv> npm create vite@latest
 
 > npx
 > create-vite
 
-√ Project name: ... system-alv
+√ Project name: ... front-alv
 √ Select a framework: » React
 √ Select a variant: » TypeScript
 
-Scaffolding project in C:\dev\system\system-alv...
+Scaffolding project in C:\dev\sys\system_alv\front-alv...
 
 Done. Now run:
 
-  cd system-alv
+  cd front-alv
   npm install
   npm run dev
 
-PS C:\dev\system> cd system-alv
-PS C:\dev\system\system-alv> npm i
+PS C:\dev\sys\system_alv> cd front-alv
+PS C:\dev\sys\system_alv\front-alv> npm install -D tailwindcss postcss autoprefixer
 
-added 191 packages, and audited 192 packages in 39s
+added 79 packages, and audited 325 packages in 6s
 
-41 packages are looking for funding
+93 packages are looking for funding
   run `npm fund` for details
 
 found 0 vulnerabilities
-PS C:\dev\system\system-alv> npm run dev
+PS C:\dev\sys\system_alv\front-alv> npx tailwindcss init -p
 
-> system-alv@0.0.0 dev
-> vite
+Created Tailwind CSS config file: tailwind.config.js
+Created PostCSS config file: postcss.config.js
+PS C:\dev\sys\system_alv\front-alv> 
+PS C:\dev\sys\system_alv\front-alv> npm i -D @types/node
 
+added 2 packages, and audited 327 packages in 2s
 
-  VITE v5.4.6  ready in 204 ms
-
-  ➜  Local:   http://localhost:5173/
-  ➜  Network: use --host to expose
-  ➜  press h + enter to show help
-```
-
-INSTALANDO O SHADCN
-
-```
-PS C:\dev\system\system-alv> npm i -D tailwindcss postcss autoprefixer
-
-added 80 packages, and audited 272 packages in 2m
-
-65 packages are looking for funding
+93 packages are looking for funding
   run `npm fund` for details
 
 found 0 vulnerabilities
-PS C:\dev\system\system-alv>   
+PS C:\dev\sys\system_alv\front-alv> npx shadcn@latest init
+✔ Preflight checks.
+✔ Verifying framework. Found Vite.
+✔ Validating Tailwind CSS.
+✔ Validating import alias.
+√ Which style would you like to use? » New York
+√ Which color would you like to use as the base color? » Zinc
+√ Would you like to use CSS variables for theming? ... no / yes
+✔ Writing components.json.
+✔ Checking registry.
+✔ Updating tailwind.config.js
+✔ Updating src\index.css
+✔ Installing dependencies.
+✔ Created 1 file:
+  - src\lib\utils.ts
+
+Success! Project initialization completed.
+You may now add components.
+
+PS C:\dev\sys\system_alv\front-alv> npx shadcn@latest add button
+>>
+✔ Checking registry.
+✔ Installing dependencies.
+✔ Created 1 file:
+  - src\components\ui\button.tsx
+
 ```
 
 
