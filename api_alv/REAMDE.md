@@ -1,5 +1,7 @@
 CRIANDO API
 
+para rodar a api "python app.py"
+
 # CONFIGURANDO API
 
 ```
