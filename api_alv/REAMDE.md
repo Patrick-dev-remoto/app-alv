@@ -74,3 +74,17 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 ```
+
+
+# COMENTANDO EM PYTHON
+```
+api_alv
+│
+├── venv
+│   ├── include
+│   ├── lib
+│   ├── scripts
+│   └── pyvenv.cfg
+│
+└── app.py
+```
