@@ -27,7 +27,7 @@ const carrosItems: { title: string; href: string }[] = [
 export default function Navbar() {
   return (
       <>
-      <aside className="flex w-64 flex-col justify-between border-r bg-background">
+      <aside className="flex w-64 h-full flex-col justify-between border-r bg-background">
         <div>
           <div className="p-6">
             <h1 className="flex items-center text-2xl font-bold">
