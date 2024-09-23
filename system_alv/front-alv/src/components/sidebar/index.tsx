@@ -1,15 +1,14 @@
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "../ui/command";
-import { Separator } from "../ui/separator";
-import { Bell, Cookie, CreditCard, Inbox, MessageSquare, Settings, User} from "lucide-react"
-import UserItem from "../useritem";
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+  } from "../ui/command";
+  import { Bell, Cookie, CreditCard, Inbox, MessageSquare, Settings, User} from "lucide-react"
+  import UserItem from "../useritem";
 
 export default function Sidebar() {
   const menuList = [
@@ -60,13 +59,13 @@ export default function Sidebar() {
     },
   ];
   return (
-    <div className=" flex flex-col w-[250px] min-w-[250px] gap-4 border-r min-h-screen p-4">
+    <div className="fixed w-[250px] min-w-[250px] flex flex-col gap-4 border-r h-screen p-4 shadow-sm overflow-y-auto">
       <div>
         <UserItem />
       </div>
       <div className="grow">
-        <Command style={{overflow: "visible"}}>
-          <CommandList style={{overflow: "visible"}}>
+        <Command className="overflow-visible">
+          <CommandList className="overflow-visible">
             <CommandEmpty>No results found.</CommandEmpty>
             {menuList.map((menu: any, key: number) => (
                 <CommandGroup key={key} heading={menu.group}>
@@ -78,7 +77,7 @@ export default function Sidebar() {
           </CommandList>
         </Command>
       </div>
-      <div>Settings/Nottifications</div>
+      <div>Settings/Notifications</div>
     </div>
   );
 }
