@@ -1,11 +1,12 @@
 import Navbar from '@/components/navbar';
+import Sidebar from '@/components/sidebar';
 import React from 'react';
 
 export default function Home() {
   return (
     <div className="flex h-screen">
         <nav>
-            <Navbar/>
+            <Sidebar/>
         </nav>
 
             <div className="flex flex-1 flex-col">
