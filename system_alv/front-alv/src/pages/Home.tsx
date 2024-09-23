@@ -1,17 +1,15 @@
-import Navbar from '@/components/navbar';
+import Header from '@/components/header';
 import Sidebar from '@/components/sidebar';
-import React from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
-    <div className="flex h-screen">
-        <nav>
-            <Sidebar/>
-        </nav>
-
-            <div className="flex flex-1 flex-col">
-        <main className="flex-1 overflow-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">BEM VINDO A HOME PAGE</h1>
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <div className="pl-[250px] flex-1 flex flex-col h-full w-screen">
+        <Header />
+        <main className="flex-1 p-4 overflow-auto">
+          <Button variant={'outline'}>Click me man</Button>
         </main>
       </div>
     </div>

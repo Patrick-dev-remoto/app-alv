@@ -1,5 +1,5 @@
 export default function UserItem(){
-    return <div className="flex items-center gap-3 border rounded-[8px] p-2">
+    return <div className="flex items-center gap-3 border rounded-[8px] p-2 shadow-sm">
         <div className="avatar rounded-full h-10 w-10 bg-emerald-500 text-white font-[700] flex items-center justify-center">
             <p>PD</p>
         </div>
