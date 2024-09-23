@@ -1,7 +1,4 @@
-import * as React from "react"
 import { ChevronDown, LogOut, FileText, UserPlus, Car } from "lucide-react"
-
-import { cn } from "@/lib/utils"
 import {
   Collapsible,
   CollapsibleContent,
@@ -51,13 +48,6 @@ export default function Navbar() {
           </div>
           <nav className="space-y-2 px-4">
             <a
-              href="/relatorios"
-              className="flex items-center rounded-lg px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-            >
-              <FileText className="mr-2 h-4 w-4" />
-              Relatórios
-            </a>
-            <a
               href="/cadastro"
               className="flex items-center rounded-lg px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
             >
@@ -84,6 +74,13 @@ export default function Navbar() {
                 ))}
               </CollapsibleContent>
             </Collapsible>
+            <a
+              href="/relatorios"
+              className="flex items-center rounded-lg px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              Relatórios
+            </a>
           </nav>
         </div>
         <div className="p-4">
