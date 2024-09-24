@@ -26,7 +26,7 @@ export default function Header() {
     },
   ]);
   return (
-    <div className="grid grid-cols-2 border-b p-3">
+    <div className="grid grid-cols-2 border-b p-3 overflow-hidden">
       <CommandDemo></CommandDemo>
 
       <div className="flex items-center justify-end">
@@ -34,7 +34,13 @@ export default function Header() {
           <DropdownMenuTrigger className="bg-transparent border-none p-0 focus:border-none focus-within:outline-none focus-visible:outline-none">
             {" "}
             <Button variant="outline" className="relative">
-                <div className={`absolute -top-2 -right-1 h-3 w-3 rounded-full my-1 ${notifications.find((x: any)=> x.read === true) ? "bg-green-500" : "bg-neutral-200"}`}></div>
+              <div
+                className={`absolute -top-2 -right-1 h-3 w-3 rounded-full my-1 ${
+                  notifications.find((x: any) => x.read === true)
+                    ? "bg-green-500"
+                    : "bg-neutral-200"
+                }`}
+              ></div>
               <Bell className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>

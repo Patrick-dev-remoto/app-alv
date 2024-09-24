@@ -1,14 +1,22 @@
 import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
-  } from "../ui/command";
-  import { Bell, Cookie, CreditCard, Inbox, MessageSquare, Settings, User} from "lucide-react"
-  import UserItem from "../useritem";
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "../ui/command";
+import {
+  Bell,
+  Cookie,
+  CreditCard,
+  Inbox,
+  MessageSquare,
+  Settings,
+  User,
+} from "lucide-react";
+import UserItem from "../useritem";
 
 export default function Sidebar() {
   const menuList = [
@@ -17,22 +25,22 @@ export default function Sidebar() {
       items: [
         {
           link: "/",
-          icon: <User/>,
+          icon: <User />,
           text: "Profile",
         },
         {
           link: "/",
-          icon: <Inbox/>,
+          icon: <Inbox />,
           text: "Inbox",
         },
         {
           link: "/",
-          icon: <CreditCard/>,
+          icon: <CreditCard />,
           text: "Billing",
         },
         {
           link: "/",
-          icon: <Bell/>,
+          icon: <Bell />,
           text: "Notifications",
         },
       ],
@@ -42,17 +50,17 @@ export default function Sidebar() {
       items: [
         {
           link: "/",
-          icon: <Settings/>,
+          icon: <Settings />,
           text: "General Settings",
         },
         {
           link: "/",
-          icon: <Cookie/>,
+          icon: <Cookie />,
           text: "Privacy",
         },
         {
           link: "/",
-          icon: <MessageSquare/>,
+          icon: <MessageSquare />,
           text: "Logs",
         },
       ],
@@ -68,11 +76,16 @@ export default function Sidebar() {
           <CommandList className="overflow-visible">
             <CommandEmpty>No results found.</CommandEmpty>
             {menuList.map((menu: any, key: number) => (
-                <CommandGroup key={key} heading={menu.group}>
-                    {menu.items.map((option: any, optionKey: number) => 
-                        <CommandItem key={optionKey} className="flex gap-2 cursor-pointer">{option.icon} {option.text}</CommandItem>
-                    )}
-                </CommandGroup>
+              <CommandGroup key={key} heading={menu.group}>
+                {menu.items.map((option: any, optionKey: number) => (
+                  <CommandItem
+                    key={optionKey}
+                    className="flex gap-2 cursor-pointer"
+                  >
+                    {option.icon} {option.text}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
             ))}
           </CommandList>
         </Command>
