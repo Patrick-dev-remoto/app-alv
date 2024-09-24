@@ -1,13 +1,14 @@
 import Header from "@/components/header";
 import ItemsGrid from "@/components/itemsgrid";
 import Register from "@/components/register";
+import ReportsF from "@/components/reportsF";
 import Sidebar from "@/components/sidebar";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export default function Home() {
   const [currentRoute, setCurrentRoute] = useState("items-grid");
-  const [pageActive, setPageActive] = useState("Pages not found");
+  const [pageActive, setPageActive] = useState("");
 
   const handleRouteChange = (route: string) => {
     setPageActive(route);
@@ -21,6 +22,9 @@ export default function Home() {
       break;
     case "register":
       mainContent = <Register />;
+      break;
+    case "reports":
+      mainContent = <ReportsF />
       break;
     default:
       mainContent = "Pages not found";

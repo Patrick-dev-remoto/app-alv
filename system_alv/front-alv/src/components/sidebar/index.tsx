@@ -36,7 +36,7 @@ export default function Sidebar({ onRouteChange, pageActive }: SidebarProps) {
           text: "Register",
         },
         {
-          link: "/",
+          link: "reports",
           icon: <Clipboard className="h-5 w-5" />,
           text: "Reports",
         },
