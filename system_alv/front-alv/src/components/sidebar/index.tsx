@@ -20,13 +20,18 @@ import {
 import UserItem from "../useritem";
 import { Button } from "../ui/button";
 
-export default function Sidebar() {
+interface SidebarProps {
+  onRouteChange: (route: string) => void;
+  pageActive: string;
+}
+
+export default function Sidebar({ onRouteChange, pageActive }: SidebarProps) {
   const menuList = [
     {
       group: "F&I",
       items: [
         {
-          link: "/",
+          link: "register",
           icon: <SquarePen className="h-5 w-5" />,
           text: "Register",
         },
@@ -97,9 +102,20 @@ export default function Sidebar() {
                 {menu.items.map((option, optionKey) => (
                   <CommandItem
                     key={optionKey}
-                    className="flex gap-2 cursor-pointer"
+                    className={`flex gap-2 p-0 cursor-pointer ${
+                      pageActive === option.link ? "bg-slate-200" : ""
+                    }`}
                   >
-                    {option.icon} {option.text}
+                    <a
+                      onClick={() => onRouteChange(option.link)}
+                      className={`text-slate-950 flex gap-2 p-2 w-full ${
+                        pageActive === option.link
+                          ? "hover:text-slate-950 bg-slate-200 rounded cursor-default"
+                          : ""
+                      }`}
+                    >
+                      {option.icon} {option.text}
+                    </a>
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -107,7 +123,10 @@ export default function Sidebar() {
           </CommandList>
         </Command>
       </div>
-      <Button variant="outline" className="w-full mt-auto flex justify-between p-3 focus-within:outline-none focus-visible:outline-none">
+      <Button
+        variant="outline"
+        className="w-full mt-auto flex justify-between p-3 focus-within:outline-none focus-visible:outline-none"
+      >
         <LogOut className="h-4 w-4" />
         Logout
       </Button>
