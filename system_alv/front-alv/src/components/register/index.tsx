@@ -19,32 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
-
-const vehicleDatabase: {
-  [key: string]: { name: string; model: string; brand: string; type: string };
-} = {
-  ABC1234: { name: "Honda Civic", model: "2022", brand: "Honda", type: "Car" },
-  XYZ5678: {
-    name: "Toyota Corolla",
-    model: "2021",
-    brand: "Toyota",
-    type: "Car",
-  },
-  DEF9012: { name: "Ford F-150", model: "2023", brand: "Ford", type: "Truck" },
-};
-
-const fetchVehicleDetails = async (plate: string) => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // Check if the plate exists in our mock database
-  if (plate in vehicleDatabase) {
-    return vehicleDatabase[plate];
-  }
-
-  // Return null if no vehicle found
-  return null;
-};
+import FormVehicle from "../formVeic";
 
 export default function Register() {
   const [vehicleDetails, setVehicleDetails] = useState<any>(null);
@@ -70,18 +45,10 @@ export default function Register() {
     hasInsurance: false,
   });
 
-  const handlePlateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const plate = e.target.value;
-    setFormData((prev) => ({ ...prev, plate }));
-    if (plate.length === 7) {
-      setIsLoading(true);
-      const details = await fetchVehicleDetails(plate);
-      setVehicleDetails(details);
-      setIsLoading(false);
-    } else {
-      setVehicleDetails(null);
-    }
-  };
+  const handleVehicleDetailsChange = (details: any) =>{
+    setVehicleDetails(details)
+    console.log("Vehicle details:", details)
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -127,38 +94,7 @@ export default function Register() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="plate">Vehicle Plate</Label>
-              <Input
-                id="plate"
-                name="plate"
-                value={formData.plate}
-                onChange={handlePlateChange}
-                placeholder="ABC1234"
-                maxLength={7}
-              />
-            </div>
-            {isLoading && <div>Loading vehicle details...</div>}
-            {vehicleDetails && (
-              <>
-                <div className="space-y-2">
-                  <Label>Vehicle Name</Label>
-                  <Input value={vehicleDetails.name} readOnly />
-                </div>
-                <div className="space-y-2">
-                  <Label>Model</Label>
-                  <Input value={vehicleDetails.model} readOnly />
-                </div>
-                <div className="space-y-2">
-                  <Label>Brand</Label>
-                  <Input value={vehicleDetails.brand} readOnly />
-                </div>
-                <div className="space-y-2">
-                  <Label>Type</Label>
-                  <Input value={vehicleDetails.type} readOnly />
-                </div>
-              </>
-            )}
+            <FormVehicle onVehicleDetailsChange={handleVehicleDetailsChange}/>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
