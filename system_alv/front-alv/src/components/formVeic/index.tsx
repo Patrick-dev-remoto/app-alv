@@ -1,23 +1,38 @@
 import { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 interface VehicleDetails {
   name: string;
-  model: string;
+  modelYear: string; // Ano do modelo
+  manufacturingYear: string; // Ano de fabricação
   brand: string;
   type: string;
 }
 
 const vehicleDatabase: Record<string, VehicleDetails> = {
-  ABC1234: { name: "Honda Civic", model: "2022", brand: "Honda", type: "Car" },
+  ABC1234: {
+    name: "Honda Civic",
+    modelYear: "2022",
+    manufacturingYear: "2021",
+    brand: "Honda",
+    type: "Car",
+  },
   XYZ5678: {
     name: "Toyota Corolla",
-    model: "2021",
+    modelYear: "2021",
+    manufacturingYear: "2020",
     brand: "Toyota",
     type: "Car",
   },
-  DEF9012: { name: "Ford F-150", model: "2023", brand: "Ford", type: "Truck" },
+  DEF9012: {
+    name: "Ford F-150",
+    modelYear: "2023",
+    manufacturingYear: "2022",
+    brand: "Ford",
+    type: "Truck",
+  },
 };
 
 const fetchVehicleDetails = async (
@@ -40,23 +55,45 @@ export default function FormVehicle({
     null
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isManualInput, setIsManualInput] = useState<boolean>(false);
+  const [manualDetails, setManualDetails] = useState<VehicleDetails>({
+    name: "",
+    modelYear: "",
+    manufacturingYear: "",
+    brand: "",
+    type: "",
+  });
 
   useEffect(() => {
     const getVehicleDetails = async () => {
-      if (plate.length === 8 || plate.length === 7) {
+      if (plate.length === 7 || plate.length === 8) {
         setIsLoading(true);
-        const details = await fetchVehicleDetails(plate.toUpperCase().replace("-",""));
+        const details = await fetchVehicleDetails(
+          plate.toUpperCase().replace("-", "")
+        );
         setVehicleDetails(details);
         onVehicleDetailsChange(details);
         setIsLoading(false);
+        setIsManualInput(!details); // Enable manual input if not found
       } else {
         setVehicleDetails(null);
         onVehicleDetailsChange(null);
+        setIsManualInput(false); // Reset manual input if plate is invalid
       }
     };
 
     getVehicleDetails();
   }, [plate]);
+
+  const handleManualInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setManualDetails((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleManualSubmit = () => {
+    setVehicleDetails(manualDetails);
+    onVehicleDetailsChange(manualDetails);
+  };
 
   return (
     <>
@@ -71,25 +108,83 @@ export default function FormVehicle({
           maxLength={8}
         />
       </div>
-      {isLoading && <div>Loading vehicle details...</div>}
-      {vehicleDetails && (
+      {!isLoading && (
         <>
-          <div className="space-y-2">
-            <Label>Vehicle Name</Label>
-            <Input value={vehicleDetails.name} readOnly />
-          </div>
-          <div className="space-y-2">
-            <Label>Model</Label>
-            <Input value={vehicleDetails.model} readOnly />
-          </div>
-          <div className="space-y-2">
-            <Label>Brand</Label>
-            <Input value={vehicleDetails.brand} readOnly />
-          </div>
-          <div className="space-y-2">
-            <Label>Type</Label>
-            <Input value={vehicleDetails.type} readOnly />
-          </div>
+          {vehicleDetails ? (
+            <>
+              <div className="space-y-2">
+                <Label>Vehicle Name</Label>
+                <Input value={vehicleDetails.name} readOnly />
+              </div>
+              <div className="space-y-2">
+                <Label>Model Year</Label>
+                <Input value={vehicleDetails.modelYear} readOnly />
+              </div>
+              <div className="space-y-2">
+                <Label>Manufacturing Year</Label>
+                <Input value={vehicleDetails.manufacturingYear} readOnly />
+              </div>
+              <div className="space-y-2">
+                <Label>Brand</Label>
+                <Input value={vehicleDetails.brand} readOnly />
+              </div>
+              <div className="space-y-2">
+                <Label>Type</Label>
+                <Input value={vehicleDetails.type} readOnly />
+              </div>
+            </>
+          ) : isManualInput ? (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Vehicle Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={manualDetails.name}
+                  onChange={handleManualInputChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="modelYear">Model Year</Label>
+                <Input
+                  id="modelYear"
+                  name="modelYear"
+                  value={manualDetails.modelYear}
+                  onChange={handleManualInputChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="manufacturingYear">Manufacturing Year</Label>
+                <Input
+                  id="manufacturingYear"
+                  name="manufacturingYear"
+                  value={manualDetails.manufacturingYear}
+                  onChange={handleManualInputChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="brand">Brand</Label>
+                <Input
+                  id="brand"
+                  name="brand"
+                  value={manualDetails.brand}
+                  onChange={handleManualInputChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="type">Type</Label>
+                <Input
+                  id="type"
+                  name="type"
+                  value={manualDetails.type}
+                  onChange={handleManualInputChange}
+                />
+              </div>
+              <Button onClick={handleManualSubmit}>
+                Submit Manual Details
+              </Button>
+            </div>
+          ) : null}
         </>
       )}
     </>
