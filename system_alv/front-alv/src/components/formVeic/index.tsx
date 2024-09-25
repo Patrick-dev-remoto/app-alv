@@ -5,11 +5,11 @@ import { Button } from "../ui/button";
 
 interface VehicleDetails {
   name: string;
-  modelYear: string; // Ano do modelo
-  manufacturingYear: string; // Ano de fabricação
+  modelYear: string;
+  manufacturingYear: string;
   brand: string;
   type: string;
-  price: string; // Preço do carro
+  price: string;
 }
 
 const vehicleDatabase: Record<string, VehicleDetails> = {
@@ -42,7 +42,6 @@ const vehicleDatabase: Record<string, VehicleDetails> = {
 const fetchVehicleDetails = async (
   plate: string
 ): Promise<VehicleDetails | null> => {
-  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return vehicleDatabase[plate] || null;
 };
@@ -55,12 +54,7 @@ export default function FormVehicle({
   onVehicleDetailsChange,
 }: FormVehicleProps) {
   const [plate, setPlate] = useState<string>("");
-  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetails | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isManualInput, setIsManualInput] = useState<boolean>(false);
-  const [manualDetails, setManualDetails] = useState<VehicleDetails>({
+  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetails>({
     name: "",
     modelYear: "",
     manufacturingYear: "",
@@ -68,6 +62,8 @@ export default function FormVehicle({
     type: "",
     price: "",
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isManualInput, setIsManualInput] = useState<boolean>(false);
 
   useEffect(() => {
     const getVehicleDetails = async () => {
@@ -76,135 +72,131 @@ export default function FormVehicle({
         const details = await fetchVehicleDetails(
           plate.toUpperCase().replace("-", "")
         );
-        setVehicleDetails(details);
-        onVehicleDetailsChange(details);
+
+        if (details) {
+          setVehicleDetails(details);
+        } else {
+          setVehicleDetails({
+            name: "",
+            modelYear: "",
+            manufacturingYear: "",
+            brand: "",
+            type: "",
+            price: "",
+          });
+        }
         setIsLoading(false);
-        setIsManualInput(!details); // Enable manual input if not found
       } else {
-        setVehicleDetails(null);
-        onVehicleDetailsChange(null);
-        setIsManualInput(false); // Reset manual input if plate is invalid
+        setVehicleDetails({
+          name: "",
+          modelYear: "",
+          manufacturingYear: "",
+          brand: "",
+          type: "",
+          price: "",
+        });
       }
     };
 
     getVehicleDetails();
   }, [plate]);
 
-  const handleManualInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setManualDetails((prev) => ({ ...prev, [name]: value }));
+    setVehicleDetails((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleManualSubmit = () => {
-    setVehicleDetails(manualDetails);
-    onVehicleDetailsChange(manualDetails);
+  const toggleManualInput = () => {
+    setIsManualInput((prev) => !prev);
   };
 
   return (
-    <>
+    <div className="p-4 border rounded-lg shadow-md bg-gray-50">
       <div className="space-y-2">
         <Label htmlFor="plate">Vehicle Plate</Label>
-        <Input
-          id="plate"
-          name="plate"
-          value={plate}
-          onChange={(e) => setPlate(e.target.value)}
-          placeholder="ABC1234"
-          maxLength={8}
-        />
+        <div className="flex items-center gap-2">
+          <Input
+            id="plate"
+            name="plate"
+            value={plate}
+            onChange={(e) => setPlate(e.target.value)}
+            placeholder="ABC1234"
+            maxLength={8}
+            className="shadow-sm focus:outline-none focus-visible:ring-0 rounded-lg"
+          />
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={toggleManualInput}
+              className={`flex w-8 h-6 items-center cursor-pointer rounded-full transition-colors duration-200 ease-in-out ${
+                isManualInput ? "bg-indigo-600" : "bg-gray-200"
+              }`}
+              role="switch"
+              aria-checked={isManualInput}
+              aria-labelledby="switch-1-label"
+            >
+              <span className="sr-only">Toggle Manual Input</span>
+              <span
+                aria-hidden="true"
+                className={`absolute h-4 w-4 rounded-full bg-white shadow-sm transition duration-200 ease-in-out transform ${
+                  isManualInput ? "-translate-x-[16px]" : "translate-x-0"
+                }`}
+              ></span>
+            </button>
+            <Label
+              className="text-sm leading-6 text-gray-600 ml-2"
+              id="switch-1-label"
+            >
+              Manual
+            </Label>
+          </div>
+        </div>
       </div>
-      {!isLoading && (
-        <>
-          {vehicleDetails ? (
-            <>
-              <div className="space-y-2">
-                <Label>Vehicle Name</Label>
-                <Input value={vehicleDetails.name} readOnly />
-              </div>
-              <div className="space-y-2">
-                <Label>Model Year</Label>
-                <Input value={vehicleDetails.modelYear} readOnly />
-              </div>
-              <div className="space-y-2">
-                <Label>Manufacturing Year</Label>
-                <Input value={vehicleDetails.manufacturingYear} readOnly />
-              </div>
-              <div className="space-y-2">
-                <Label>Brand</Label>
-                <Input value={vehicleDetails.brand} readOnly />
-              </div>
-              <div className="space-y-2">
-                <Label>Type</Label>
-                <Input value={vehicleDetails.type} readOnly />
-              </div>
-              <div className="space-y-2">
-                <Label>Price</Label>
-                <Input value={vehicleDetails.price} readOnly />
-              </div>
-            </>
-          ) : isManualInput ? (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Vehicle Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={manualDetails.name}
-                  onChange={handleManualInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="modelYear">Model Year</Label>
-                <Input
-                  id="modelYear"
-                  name="modelYear"
-                  value={manualDetails.modelYear}
-                  onChange={handleManualInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="manufacturingYear">Manufacturing Year</Label>
-                <Input
-                  id="manufacturingYear"
-                  name="manufacturingYear"
-                  value={manualDetails.manufacturingYear}
-                  onChange={handleManualInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="brand">Brand</Label>
-                <Input
-                  id="brand"
-                  name="brand"
-                  value={manualDetails.brand}
-                  onChange={handleManualInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="type">Type</Label>
-                <Input
-                  id="type"
-                  name="type"
-                  value={manualDetails.type}
-                  onChange={handleManualInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="price">Price</Label>
-                <Input
-                  id="price"
-                  name="price"
-                  value={manualDetails.price}
-                  onChange={handleManualInputChange}
-                />
-              </div>
-              <Button onClick={handleManualSubmit}>
-                Submit Manual Details
-              </Button>
-            </div>
-          ) : null}
-        </>
+      {isManualInput && (
+        <div className="mt-4">
+          <div className="border p-4 rounded-lg bg-white shadow-sm">
+            <Label>Vehicle Name</Label>
+            <Input
+              name="name"
+              value={vehicleDetails.name}
+              onChange={handleInputChange}
+            />
+            <Label>Model Year</Label>
+            <Input
+              name="modelYear"
+              value={vehicleDetails.modelYear}
+              onChange={handleInputChange}
+            />
+            <Label>Manufacturing Year</Label>
+            <Input
+              name="manufacturingYear"
+              value={vehicleDetails.manufacturingYear}
+              onChange={handleInputChange}
+            />
+            <Label>Brand</Label>
+            <Input
+              name="brand"
+              value={vehicleDetails.brand}
+              onChange={handleInputChange}
+            />
+            <Label>Type</Label>
+            <Input
+              name="type"
+              value={vehicleDetails.type}
+              onChange={handleInputChange}
+            />
+            <Label>Price</Label>
+            <Input
+              name="price"
+              value={vehicleDetails.price}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
       )}
-    </>
+    </div>
   );
 }
