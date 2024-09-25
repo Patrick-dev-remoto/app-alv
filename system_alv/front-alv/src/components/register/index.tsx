@@ -18,25 +18,31 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
+const vehicleDatabase: {
+  [key: string]: { name: string; model: string; brand: string; type: string };
+} = {
+  ABC1234: { name: "Honda Civic", model: "2022", brand: "Honda", type: "Car" },
+  XYZ5678: {
+    name: "Toyota Corolla",
+    model: "2021",
+    brand: "Toyota",
+    type: "Car",
+  },
+  DEF9012: { name: "Ford F-150", model: "2023", brand: "Ford", type: "Truck" },
+};
 
 const fetchVehicleDetails = async (plate: string) => {
+  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  if (plate === "ABC1234") {
-    return {
-      name: "Honda Civic",
-      model: "2022",
-      brand: "Honda",
-      type: "Car",
-    };
+
+  // Check if the plate exists in our mock database
+  if (plate in vehicleDatabase) {
+    return vehicleDatabase[plate];
   }
+
+  // Return null if no vehicle found
   return null;
 };
 
@@ -110,7 +116,7 @@ export default function Register() {
   );
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full mx-auto">
       <CardHeader>
         <CardTitle>Vehicle Financing Application</CardTitle>
         <CardDescription>
@@ -396,7 +402,7 @@ export default function Register() {
         </form>
       </CardContent>
       <CardFooter>
-        <Button type="submit" onClick={handleSubmit}>
+        <Button type="submit" variant={"outline"} onClick={handleSubmit}>
           Submit Application
         </Button>
       </CardFooter>
