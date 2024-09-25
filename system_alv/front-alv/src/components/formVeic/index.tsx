@@ -125,13 +125,13 @@ export default function FormVehicle({
             onChange={(e) => setPlate(e.target.value)}
             placeholder="ABC1234"
             maxLength={8}
-            className="shadow-sm focus:outline-none focus-visible:ring-0 rounded-lg"
+            className={`shadow-sm focus:outline-none focus-visible:ring-slate-300 focus-visible:ring-[1px] rounded-lg `}
           />
           <div className="flex items-center">
             <button
               type="button"
               onClick={toggleManualInput}
-              className={`flex w-8 h-6 items-center cursor-pointer rounded-full transition-colors duration-200 ease-in-out ${
+              className={`flex w-8 h-6 items-center cursor-pointer rounded-full focus-visible:outline-none focus-within:outline-none transition-colors duration-200 ease-in-out ${
                 isManualInput ? "bg-indigo-600" : "bg-gray-200"
               }`}
               role="switch"
@@ -142,7 +142,7 @@ export default function FormVehicle({
               <span
                 aria-hidden="true"
                 className={`absolute h-4 w-4 rounded-full bg-white shadow-sm transition duration-200 ease-in-out transform ${
-                  isManualInput ? "-translate-x-[16px]" : "translate-x-0"
+                  isManualInput ? "translate-x-0" : "-translate-x-[16px]"
                 }`}
               ></span>
             </button>
