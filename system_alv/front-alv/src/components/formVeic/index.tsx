@@ -114,7 +114,7 @@ export default function FormVehicle({
   };
 
   return (
-    <div className="p-4 border rounded-lg shadow-md bg-gray-50">
+    <div className="p-4 border rounded-lg shadow-sm bg-gray-50">
       <div className="space-y-2">
         <Label htmlFor="plate">Vehicle Plate</Label>
         <div className="flex items-center gap-2">
@@ -125,7 +125,7 @@ export default function FormVehicle({
             onChange={(e) => setPlate(e.target.value)}
             placeholder="ABC1234"
             maxLength={8}
-            className={`shadow-sm focus:outline-none focus-visible:ring-slate-300 focus-visible:ring-[1px] rounded-lg `}
+            className={`shadow-sm focus:ring-slate-300 focus-within:ring-slate-300 focus-visible:ring-slate-300 focus-visible:ring-[1px] rounded-lg duration-200 transition-all`}
           />
           <div className="flex items-center">
             <button
