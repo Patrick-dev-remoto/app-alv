@@ -9,6 +9,7 @@ interface VehicleDetails {
   manufacturingYear: string; // Ano de fabricação
   brand: string;
   type: string;
+  price: string; // Preço do carro
 }
 
 const vehicleDatabase: Record<string, VehicleDetails> = {
@@ -18,6 +19,7 @@ const vehicleDatabase: Record<string, VehicleDetails> = {
     manufacturingYear: "2021",
     brand: "Honda",
     type: "Car",
+    price: "R$ 100.000",
   },
   XYZ5678: {
     name: "Toyota Corolla",
@@ -25,6 +27,7 @@ const vehicleDatabase: Record<string, VehicleDetails> = {
     manufacturingYear: "2020",
     brand: "Toyota",
     type: "Car",
+    price: "R$ 90.000",
   },
   DEF9012: {
     name: "Ford F-150",
@@ -32,6 +35,7 @@ const vehicleDatabase: Record<string, VehicleDetails> = {
     manufacturingYear: "2022",
     brand: "Ford",
     type: "Truck",
+    price: "R$ 200.000",
   },
 };
 
@@ -62,6 +66,7 @@ export default function FormVehicle({
     manufacturingYear: "",
     brand: "",
     type: "",
+    price: "",
   });
 
   useEffect(() => {
@@ -132,6 +137,10 @@ export default function FormVehicle({
                 <Label>Type</Label>
                 <Input value={vehicleDetails.type} readOnly />
               </div>
+              <div className="space-y-2">
+                <Label>Price</Label>
+                <Input value={vehicleDetails.price} readOnly />
+              </div>
             </>
           ) : isManualInput ? (
             <div className="space-y-4">
@@ -177,6 +186,15 @@ export default function FormVehicle({
                   id="type"
                   name="type"
                   value={manualDetails.type}
+                  onChange={handleManualInputChange}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="price">Price</Label>
+                <Input
+                  id="price"
+                  name="price"
+                  value={manualDetails.price}
                   onChange={handleManualInputChange}
                 />
               </div>

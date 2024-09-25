@@ -47,7 +47,6 @@ export default function Register() {
 
   const handleVehicleDetailsChange = (details: any) =>{
     setVehicleDetails(details)
-    console.log("Vehicle details:", details)
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
