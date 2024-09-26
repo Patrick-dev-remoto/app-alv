@@ -1,8 +1,8 @@
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import ItemsGrid from "@/components/itemsgrid";
-import Register from "@/components/register";
-import ReportsF from "@/components/reportsF";
-import Sidebar from "@/components/sidebar";
+import Register from "@/components/Register";
+import ReportsF from "@/components/ReportsF";
+import Sidebar from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 

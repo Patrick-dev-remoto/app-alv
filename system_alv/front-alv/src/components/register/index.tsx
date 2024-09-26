@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
-import FormVehicle from "../formVeic";
+import FormVehicle from "../FormVeic";
 
 export default function Register() {
   const [vehicleDetails, setVehicleDetails] = useState<any>(null);

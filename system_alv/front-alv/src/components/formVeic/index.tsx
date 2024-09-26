@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { SwitchButton } from "../ui/switchButton";
 
 interface VehicleDetails {
   name: string;
@@ -39,11 +39,29 @@ const vehicleDatabase: Record<string, VehicleDetails> = {
   },
 };
 
+const fields = [
+  { label: "Vehicle Name", name: "name" },
+  { label: "Model Year", name: "modelYear" },
+  { label: "Manufacturing Year", name: "manufacturingYear" },
+  { label: "Brand", name: "brand" },
+  { label: "Type", name: "type" },
+  { label: "Price", name: "price" },
+];
+
 const fetchVehicleDetails = async (
   plate: string
 ): Promise<VehicleDetails | null> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return vehicleDatabase[plate] || null;
+};
+
+const initialVehicleDetails: VehicleDetails = {
+  name: "",
+  modelYear: "",
+  manufacturingYear: "",
+  brand: "",
+  type: "",
+  price: "",
 };
 
 interface FormVehicleProps {
@@ -54,63 +72,32 @@ export default function FormVehicle({
   onVehicleDetailsChange,
 }: FormVehicleProps) {
   const [plate, setPlate] = useState<string>("");
-  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetails>({
-    name: "",
-    modelYear: "",
-    manufacturingYear: "",
-    brand: "",
-    type: "",
-    price: "",
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetails>(
+    initialVehicleDetails
+  );
   const [isManualInput, setIsManualInput] = useState<boolean>(false);
 
   useEffect(() => {
     const getVehicleDetails = async () => {
       if (plate.length === 7 || plate.length === 8) {
-        setIsLoading(true);
         const details = await fetchVehicleDetails(
           plate.toUpperCase().replace("-", "")
         );
-
-        if (details) {
-          setVehicleDetails(details);
-        } else {
-          setVehicleDetails({
-            name: "",
-            modelYear: "",
-            manufacturingYear: "",
-            brand: "",
-            type: "",
-            price: "",
-          });
-        }
-        setIsLoading(false);
+        setVehicleDetails(details || initialVehicleDetails);
       } else {
-        setVehicleDetails({
-          name: "",
-          modelYear: "",
-          manufacturingYear: "",
-          brand: "",
-          type: "",
-          price: "",
-        });
+        setVehicleDetails(initialVehicleDetails);
       }
     };
-
     getVehicleDetails();
   }, [plate]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = ({
+    target: { name, value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
     setVehicleDetails((prev) => ({
       ...prev,
-      [name]: value,
+      [name as keyof VehicleDetails]: value,
     }));
-  };
-
-  const toggleManualInput = () => {
-    setIsManualInput((prev) => !prev);
   };
 
   return (
@@ -119,37 +106,20 @@ export default function FormVehicle({
         <Label htmlFor="plate">Vehicle Plate</Label>
         <div className="flex items-center gap-2">
           <Input
+            className="duration-200 ease-in-out focus:outline-none focus:border-bluec focus-visible:ring-0 hover:border-bluec"
             id="plate"
             name="plate"
             value={plate}
             onChange={(e) => setPlate(e.target.value)}
             placeholder="ABC1234"
             maxLength={8}
-            className={`shadow-sm focus:ring-slate-300 focus-within:ring-slate-300 focus-visible:ring-slate-300 focus-visible:ring-[1px] rounded-lg duration-200 transition-all`}
           />
           <div className="flex items-center">
-            <button
-              type="button"
-              onClick={toggleManualInput}
-              className={`flex w-8 h-6 items-center cursor-pointer rounded-full focus-visible:outline-none focus-within:outline-none transition-colors duration-200 ease-in-out ${
-                isManualInput ? "bg-indigo-600" : "bg-gray-200"
-              }`}
-              role="switch"
-              aria-checked={isManualInput}
-              aria-labelledby="switch-1-label"
-            >
-              <span className="sr-only">Toggle Manual Input</span>
-              <span
-                aria-hidden="true"
-                className={`absolute h-4 w-4 rounded-full bg-white shadow-sm transition duration-200 ease-in-out transform ${
-                  isManualInput ? "translate-x-0" : "-translate-x-[16px]"
-                }`}
-              ></span>
-            </button>
-            <Label
-              className="text-sm leading-6 text-gray-600 ml-2"
-              id="switch-1-label"
-            >
+            <SwitchButton
+              isActive={isManualInput}
+              onToggle={() => setIsManualInput((prev) => !prev)}
+            />
+            <Label className="text-sm leading-6 text-gray-600 ml-2">
               Manual
             </Label>
           </div>
@@ -158,42 +128,16 @@ export default function FormVehicle({
       {isManualInput && (
         <div className="mt-4">
           <div className="border p-4 rounded-lg bg-white shadow-sm">
-            <Label>Vehicle Name</Label>
-            <Input
-              name="name"
-              value={vehicleDetails.name}
-              onChange={handleInputChange}
-            />
-            <Label>Model Year</Label>
-            <Input
-              name="modelYear"
-              value={vehicleDetails.modelYear}
-              onChange={handleInputChange}
-            />
-            <Label>Manufacturing Year</Label>
-            <Input
-              name="manufacturingYear"
-              value={vehicleDetails.manufacturingYear}
-              onChange={handleInputChange}
-            />
-            <Label>Brand</Label>
-            <Input
-              name="brand"
-              value={vehicleDetails.brand}
-              onChange={handleInputChange}
-            />
-            <Label>Type</Label>
-            <Input
-              name="type"
-              value={vehicleDetails.type}
-              onChange={handleInputChange}
-            />
-            <Label>Price</Label>
-            <Input
-              name="price"
-              value={vehicleDetails.price}
-              onChange={handleInputChange}
-            />
+            {fields.map(({ label, name }) => (
+              <div key={name}>
+                <Label>{label}</Label>
+                <Input
+                  name={name}
+                  value={vehicleDetails[name as keyof VehicleDetails]}
+                  onChange={handleInputChange}
+                />
+              </div>
+            ))}
           </div>
         </div>
       )}

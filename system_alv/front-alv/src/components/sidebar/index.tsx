@@ -17,7 +17,7 @@ import {
   SquarePen,
   User,
 } from "lucide-react";
-import UserItem from "../useritem";
+import UserItem from "../Useritem";
 import { Button } from "../ui/button";
 
 interface SidebarProps {
