@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { format } from "date-fns";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import {
@@ -22,7 +21,16 @@ interface ClientDetails {
   celular: string;
   telefone: string;
   email: string;
-  endereco: string;
+  endereco: {
+    cep: string;
+    rua: string;
+    bairro: string;
+    complemento?: string;
+    numero: string;
+    cidade: string;
+    estado: string;
+  };
+  tipoResidencia: string;
 }
 
 export default function FormClient() {
@@ -38,7 +46,16 @@ export default function FormClient() {
     celular: "",
     telefone: "",
     email: "",
-    endereco: "",
+    endereco: {
+      cep: "",
+      rua: "",
+      bairro: "",
+      complemento: "",
+      numero: "",
+      cidade: "",
+      estado: "",
+    },
+    tipoResidencia: "",
   });
 
   const handleSelectChange = (name: string) => (value: string) => {
@@ -47,14 +64,14 @@ export default function FormClient() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormClientData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleDateChange = (name: string) => (date: Date | undefined) => {
-    setFormClientData((prev) => ({
-      ...prev,
-      [name]: date ? format(date, "yyyy-MM-dd") : "",
-    }));
+    if (name in formClientData.endereco) {
+      setFormClientData((prev) => ({
+        ...prev,
+        endereco: { ...prev.endereco, [name]: value },
+      }));
+    } else {
+      setFormClientData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const currentYear = new Date().getFullYear();
@@ -74,7 +91,7 @@ export default function FormClient() {
         <Label htmlFor="clientName">Nome do Cliente</Label>
         <Input
           id="clientName"
-          name="clientName"
+          name="nome"
           value={formClientData.nome}
           onChange={handleInputChange}
         />
@@ -82,7 +99,7 @@ export default function FormClient() {
       <div className="space-y-2">
         <Label>Data de Nascimento</Label>
         <div className="grid grid-cols-3 gap-2">
-          <Select onValueChange={handleSelectChange("birthDay")}>
+          <Select onValueChange={handleSelectChange("dataBirth")}>
             <SelectTrigger>
               <SelectValue placeholder="Dia" />
             </SelectTrigger>
@@ -94,7 +111,7 @@ export default function FormClient() {
               ))}
             </SelectContent>
           </Select>
-          <Select onValueChange={handleSelectChange("birthMonth")}>
+          <Select onValueChange={handleSelectChange("dataBirth")}>
             <SelectTrigger>
               <SelectValue placeholder="Mês" />
             </SelectTrigger>
@@ -106,7 +123,7 @@ export default function FormClient() {
               ))}
             </SelectContent>
           </Select>
-          <Select onValueChange={handleSelectChange("birthYear")}>
+          <Select onValueChange={handleSelectChange("dataBirth")}>
             <SelectTrigger>
               <SelectValue placeholder="Ano" />
             </SelectTrigger>
@@ -143,7 +160,7 @@ export default function FormClient() {
         <Label htmlFor="issuingAgency">Órgão Emissor</Label>
         <Input
           id="issuingAgency"
-          name="issuingAgency"
+          name="orgaoEm"
           value={formClientData.orgaoEm}
           onChange={handleInputChange}
         />
@@ -151,7 +168,7 @@ export default function FormClient() {
       <div className="space-y-2">
         <Label>Data de Emissão</Label>
         <div className="grid grid-cols-3 gap-2">
-          <Select onValueChange={handleSelectChange("issueDayDate")}>
+          <Select onValueChange={handleSelectChange("dataEm")}>
             <SelectTrigger>
               <SelectValue placeholder="Dia" />
             </SelectTrigger>
@@ -163,7 +180,7 @@ export default function FormClient() {
               ))}
             </SelectContent>
           </Select>
-          <Select onValueChange={handleSelectChange("issueMonthDate")}>
+          <Select onValueChange={handleSelectChange("dataEm")}>
             <SelectTrigger>
               <SelectValue placeholder="Mês" />
             </SelectTrigger>
@@ -175,7 +192,7 @@ export default function FormClient() {
               ))}
             </SelectContent>
           </Select>
-          <Select onValueChange={handleSelectChange("issueYearDate")}>
+          <Select onValueChange={handleSelectChange("dataEm")}>
             <SelectTrigger>
               <SelectValue placeholder="Ano" />
             </SelectTrigger>
@@ -193,7 +210,7 @@ export default function FormClient() {
         <Label htmlFor="motherName">Nome da Mãe</Label>
         <Input
           id="motherName"
-          name="motherName"
+          name="nomeMae"
           value={formClientData.nomeMae}
           onChange={handleInputChange}
         />
@@ -202,7 +219,7 @@ export default function FormClient() {
         <Label htmlFor="fatherName">Nome do Pai</Label>
         <Input
           id="fatherName"
-          name="fatherName"
+          name="nomePai"
           value={formClientData.nomePai}
           onChange={handleInputChange}
         />
@@ -211,7 +228,7 @@ export default function FormClient() {
         <Label htmlFor="cellPhone">Celular</Label>
         <Input
           id="cellPhone"
-          name="cellPhone"
+          name="celular"
           value={formClientData.celular}
           onChange={handleInputChange}
           placeholder="(00) 00000-0000"
@@ -221,7 +238,7 @@ export default function FormClient() {
         <Label htmlFor="telephone">Telefone Fixo</Label>
         <Input
           id="telephone"
-          name="telephone"
+          name="telefone"
           value={formClientData.telefone}
           onChange={handleInputChange}
           placeholder="(00) 0000-0000"
@@ -238,11 +255,80 @@ export default function FormClient() {
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="address">Endereço</Label>
+        <Label htmlFor="tipoResidencia">Tipo de Residência</Label>
+        <Select onValueChange={handleSelectChange("tipoResidencia")}>
+          <SelectTrigger>
+            <SelectValue placeholder="Selecione" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="própria">Própria</SelectItem>
+            <SelectItem value="alugada">Alugada</SelectItem>
+            <SelectItem value="financiada">Financiada</SelectItem>
+            <SelectItem value="outro">Outro</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="cep">CEP</Label>
         <Input
-          id="address"
-          name="address"
-          value={formClientData.endereco}
+          id="cep"
+          name="cep"
+          value={formClientData.endereco.cep}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="rua">Rua</Label>
+        <Input
+          id="rua"
+          name="rua"
+          value={formClientData.endereco.rua}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="bairro">Bairro</Label>
+        <Input
+          id="bairro"
+          name="bairro"
+          value={formClientData.endereco.bairro}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="complemento">Complemento (opcional)</Label>
+        <Input
+          id="complemento"
+          name="complemento"
+          value={formClientData.endereco.complemento}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="numero">Número</Label>
+        <Input
+          id="numero"
+          name="numero"
+          value={formClientData.endereco.numero}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="cidade">Cidade</Label>
+        <Input
+          id="cidade"
+          name="cidade"
+          value={formClientData.endereco.cidade}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="estado">Estado</Label>
+        <Input
+          id="estado"
+          name="estado"
+          value={formClientData.endereco.estado}
           onChange={handleInputChange}
         />
       </div>
