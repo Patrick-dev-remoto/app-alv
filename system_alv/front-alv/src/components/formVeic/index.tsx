@@ -40,12 +40,12 @@ const vehicleDatabase: Record<string, VehicleDetails> = {
 };
 
 const fields = [
-  { label: "Vehicle Name", name: "name" },
-  { label: "Model Year", name: "modelYear" },
-  { label: "Manufacturing Year", name: "manufacturingYear" },
-  { label: "Brand", name: "brand" },
-  { label: "Type", name: "type" },
-  { label: "Price", name: "price" },
+  { label: "Nomde do Veículo", name: "name" },
+  { label: "Modelo Ano", name: "modelYear" },
+  { label: "Fabricação Ano", name: "manufacturingYear" },
+  { label: "Marca", name: "brand" },
+  { label: "Tipo", name: "type" },
+  { label: "Preço", name: "price" },
 ];
 
 const fetchVehicleDetails = async (
@@ -101,9 +101,9 @@ export default function FormVehicle({
   };
 
   return (
-    <div className="p-4 border rounded-lg shadow-sm bg-gray-50">
+    <div className="p-0 ">
       <div className="space-y-2">
-        <Label htmlFor="plate">Vehicle Plate</Label>
+        <Label htmlFor="plate">Placa do veículo</Label>
         <div className="flex items-center gap-2">
           <Input
             className="duration-200 ease-in-out focus:outline-none focus:border-bluec focus-visible:ring-0 hover:border-bluec"
@@ -127,11 +127,12 @@ export default function FormVehicle({
       </div>
       {isManualInput && (
         <div className="mt-4">
-          <div className="border p-4 rounded-lg bg-white shadow-sm">
+          <div>
             {fields.map(({ label, name }) => (
-              <div key={name}>
+              <div key={name} className="flex flex-col gap-2 mb-2">
                 <Label>{label}</Label>
                 <Input
+                className="duration-200 ease-in-out focus:outline-none focus:border-bluec focus-visible:ring-0 hover:border-bluec"
                   name={name}
                   value={vehicleDetails[name as keyof VehicleDetails]}
                   onChange={handleInputChange}
