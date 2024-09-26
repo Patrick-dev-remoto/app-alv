@@ -100,6 +100,8 @@ button:focus-visible {
 
 @layer base {
   :root {
+    --color-blue:#0A8BEE;
+    --color-yellow:#FFF91B;
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
