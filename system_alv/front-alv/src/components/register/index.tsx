@@ -17,9 +17,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ChevronDown } from "lucide-react";
 import FormClient from "../FormClient";
 import FormPropose from "../FormPropose";
+import LoadingDots from "../ui/loadingDots";
 
 export default function Register() {
   const [vehicleDetails, setVehicleDetails] = useState<any>(null);
@@ -44,6 +44,8 @@ export default function Register() {
     hasInsurance: false,
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleVehicleDetailsChange = (details: any) => {
     setVehicleDetails(details);
   };
@@ -51,6 +53,13 @@ export default function Register() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+  };
+
+  const handleCustomerAccordionOpen = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000); // Simula 1 segundo de carregamento
   };
 
   return (
@@ -70,7 +79,7 @@ export default function Register() {
             >
               <AccordionTrigger className="px-4 py-2 rounded-lg bg-gray-50 hover:border-bluec transition-colors focus-visible:border-bluec focus:border-bluec focus:outline-none decoration-transparent">
                 <div className="flex items-center justify-between w-full">
-                  <span className="text-lg font-semibold">
+                  <span className="text-sm font-semibold">
                     Informações do Veículo
                   </span>
                 </div>
@@ -86,15 +95,18 @@ export default function Register() {
               value="customer"
               className="border rounded-lg overflow-hidden"
             >
-              <AccordionTrigger className="px-4 py-2 rounded-lg bg-gray-50 hover:border-bluec transition-colors focus-visible:border-bluec focus:border-bluec focus:outline-none decoration-transparent">
+              <AccordionTrigger
+                className="px-4 py-2 rounded-lg bg-gray-50 hover:border-bluec transition-colors focus-visible:border-bluec focus:border-bluec focus:outline-none decoration-transparent"
+                onClick={handleCustomerAccordionOpen}
+              >
                 <div className="flex items-center justify-between w-full">
-                  <span className="text-lg font-semibold">
+                  <span className="text-sm font-semibold">
                     Informações do Cliente
                   </span>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 py-2 bg-white">
-              <FormClient />
+                {loading ? <LoadingDots /> : <FormClient />}
               </AccordionContent>
             </AccordionItem>
 
@@ -104,7 +116,7 @@ export default function Register() {
             >
               <AccordionTrigger className="px-4 py-2 rounded-lg bg-gray-50 hover:border-bluec transition-colors focus-visible:border-bluec focus:border-bluec focus:outline-none decoration-transparent">
                 <div className="flex items-center justify-between w-full">
-                  <span className="text-lg font-semibold">Proposta</span>
+                  <span className="text-sm font-semibold">Proposta</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 py-2 bg-white">
